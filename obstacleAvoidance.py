@@ -43,7 +43,7 @@ leftMotor.setPosition(float('inf'))
 rightMotor.setPosition(float('inf'))
 
 # Set ideal motor velocity.
-initialVelocity = 0.9 * maxMotorVelocity # 0.7 # 90%
+initialVelocity = 0.95 * maxMotorVelocity # 0.7 # 90%
 
 # Set the initial velocity of the left and right wheel motors.
 leftMotor.setVelocity(initialVelocity)
@@ -60,23 +60,26 @@ while robot.step(timeStep) != -1:
     
     # to read values
     values = compass.getValues()
-    print(values[0])
+    #print(values)
     
-    # 2 zones of laser
-    k = 1
-    LeftSensor = min((outerLeftSensorValue + centralLeftSensorValue)/k + centralSensorValue, maxMotorVelocity)
-    RightSensor = min((outerRightSensorValue + centralRightSensorValue)/k, maxMotorVelocity)
-    #CentralSensor = centralSensorValue
+    # 2 laser zones
+    interior = 1  # good 2, nearly good 1
+    exterior = 1  # good 2, nearly good 1
+    LeftSensor  = (outerLeftSensorValue/exterior + centralLeftSensorValue*interior)
+    RightSensor = (outerRightSensorValue/exterior + centralRightSensorValue*interior) - centralSensorValue*interior
     #print("rs: " + str(RightSensor) + " ls: " + str(LeftSensor))
+    
+    if LeftSensor == 0 and RightSensor == 0:
+        m = 2 # multiplicat 1
+        LeftSensor = LeftSensor + (values[0]**m)/values[0]
     
     # Set wheel velocities based on sensor values, prefer right turns if the central sensor is triggered.
     #leftMotor.setVelocity(initialVelocity - (centralRightSensorValue + outerRightSensorValue) / 2)
     #rightMotor.setVelocity(initialVelocity - (centralLeftSensorValue + outerLeftSensorValue) / 2 - centralSensorValue)
     
     # velocity of the left and right motor
-    desacceleration = 1
-    Lvel = max(initialVelocity - RightSensor**desacceleration, 0)
-    Rvel = max(initialVelocity - LeftSensor**desacceleration, 0)
+    Lvel = max(-9.53, min(initialVelocity - RightSensor , maxMotorVelocity))
+    Rvel = max(-9.53, min(initialVelocity - LeftSensor  , maxMotorVelocity))
     #print("lv: " + str(Lvel) + " rv: " + str(Rvel))
     leftMotor.setVelocity(Lvel)
     rightMotor.setVelocity(Rvel)
