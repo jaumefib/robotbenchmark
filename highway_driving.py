@@ -42,20 +42,20 @@ rRR = sensors['rear right'].getMaxValue()
 
 ## Variables Lantents
 # El valor de steering cap a l'esquerra es negatiu i cap a la dreta positiu
-dLeft = 0                # Distancia que ens hem apartat cap a l'esquerra
+dLeft = -0.40                # Distancia que ens hem apartat cap a l'esquerra
 dRight = 0.58 #0.576310396194  # Distancia original amb la valla de la dreta
 maxSteer = 0.4           # Maxim steer que se li permet al cotxe
 lastSteer = 0            # Valor de l'ultim steer realitzat pel cotxe
 
 ## Configuracions
-alpha1 = 0.45  # Importancia de la deteccio esquerra per girar esquerra amb steering
-alpha2 = 0.4  # Importancia de la deteccio dreta per girar dreta amb steering
+alpha1 = 0.8  # Importancia de la deteccio esquerra per girar esquerra amb steering
+alpha2 = 0.8  # Importancia de la deteccio dreta per girar dreta amb steering
 alpha3 = 0.2  # Importancia de la deteccio del darrera esquerra
 alpha4 = 0.2  # Importancia de la deteccio del darrera dret 
-beta = 1      # importancia de la separacio amb el lateral dret 
-phi = 0.1     # si no hi ha ningu al davant poder fer steering
-gamma = 0.05   # velocitat de retorn a la posicio inicial
-theta = 0.5   # valor per reduir la variacio d'un steering amb el seu anterior, evitar canvis bruscos
+beta = 0.5      # importancia de la separacio amb el lateral dret 
+phi = 0.35     # si no hi ha ningu al davant poder fer steering
+gamma = 0.01   # velocitat de retorn a la posicio inicial
+theta = 0.3   # valor per reduir la variacio d'un steering amb el seu anterior, evitar canvis bruscos
 # Velocity Hiperparameter
 vh1 = 3  # Front Left
 vh2 = 3  # Front Right
@@ -105,7 +105,8 @@ while driver.step() != -1:
         'r': rD/rR,
         }
         '''
-        print("Steer: %.2f" % (steer))
+        #print("Steer: %.2f" % (steer))
         #print("dLeft: %.2f" % (dLeft))
         #print("Speed: %.2f" % (speed))
         #print("SpeedDiff: %.2f" % (speedDiff))
+    
