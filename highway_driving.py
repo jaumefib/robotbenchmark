@@ -40,28 +40,22 @@ fL2R = sensors['front left 2'].getMaxValue()
 rLR = sensors['rear left'].getMaxValue()
 rRR = sensors['rear right'].getMaxValue()
 
-
-# Emmagatzema la distancia que ens hem apartat cap a l'esquerra
+## Variables Lantents
 # El valor de steering cap a l'esquerra es negatiu i cap a la dreta positiu
-dLeft = 0
-dRight = 0.576310396194
+dLeft = 0                # Distancia que ens hem apartat cap a l'esquerra
+dRight = 0.576310396194  # Distancia original amb la valla de la dreta
+maxSteer = 0.1           # Maxim steer que se li permet al cotxe
+lastSteer = 0            # Valor de l'ultim steer realitzat pel cotxe
 
-# retornar a la posicio inicial
-gamma = 0.2
-
-# max steer
-maxSteer = 0.1
-# Evitar canvis bruscos
-lastSteer = 0
-
-# Configuracions
-alpha1 = 0.8
-alpha2 = 0.5
-alpha3 = 0.5
-alpha4 = 0.1
-alpha5 = 0.1
-beta = 1
-phi = 0.2
+## Configuracions
+alpha1 = 0.5  # Importancia de la deteccio esquerra per girar dreta amb steering
+alpha2 = 0.5  # Importancia de la deteccio dreta per girar esquerra amb steering
+alpha3 = 0.1  # Importancia de la deteccio del darrera esquerra
+alpha4 = 0.1  # Importancia de la deteccio del darrera dret 
+beta = 1      # importancia de la separacio amb el lateral dret 
+phi = 0.2     # si no hi ha ningu al davant poder fer steering
+gamma = 0.2   # velocitat de retorn a la posicio inicial
+theta = 0.5   # valor per reduir la variacio d'un steering amb el seu anterior, evitar canvis bruscos
 
 while driver.step() != -1:
     
@@ -86,9 +80,9 @@ while driver.step() != -1:
     speedDiff = driver.getCurrentSpeed() - speed
     driver.setBrakeIntensity(max(min(speedDiff / speed, 1), 0))
     
-    steer = (-1+fD/fR-phi)*((dLeft*gamma+(lD/lR)+fLeft)*alpha2 + (dRight-(rD/rR)-fRight)*alpha3 + (rLD/rLR)*alpha4 - (rRD/rRR)*alpha5) 
+    steer = (-1+fD/fR-phi)*((dLeft*gamma+(lD/lR)+fLeft)*alpha1 + (dRight-(rD/rR)-fRight)*alpha2 + (rLD/rLR)*alpha3 - (rRD/rRR)*alpha4) 
     steer = min(max(steer, -maxSteer), maxSteer)
-    steer = (steer-lastSteer)/2
+    steer = (steer-lastSteer)*theta
     lastSteer = steer
     dLeft = 1 - (lD/lR)*beta
     driver.setSteeringAngle(steer)
