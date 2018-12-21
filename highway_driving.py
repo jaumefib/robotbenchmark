@@ -43,26 +43,26 @@ rRR = sensors['rear right'].getMaxValue()
 ## Variables Lantents
 # El valor de steering cap a l'esquerra es negatiu i cap a la dreta positiu
 dLeft = 0                # Distancia que ens hem apartat cap a l'esquerra
-dRight = 0.576310396194  # Distancia original amb la valla de la dreta
-maxSteer = 0.3           # Maxim steer que se li permet al cotxe
+dRight = 0.58 #0.576310396194  # Distancia original amb la valla de la dreta
+maxSteer = 0.4           # Maxim steer que se li permet al cotxe
 lastSteer = 0            # Valor de l'ultim steer realitzat pel cotxe
 
 ## Configuracions
-alpha1 = 0.6  # Importancia de la deteccio esquerra per girar dreta amb steering
-alpha2 = 0.6  # Importancia de la deteccio dreta per girar esquerra amb steering
-alpha3 = 0.3  # Importancia de la deteccio del darrera esquerra
-alpha4 = 0.3  # Importancia de la deteccio del darrera dret 
+alpha1 = 0.45  # Importancia de la deteccio esquerra per girar esquerra amb steering
+alpha2 = 0.4  # Importancia de la deteccio dreta per girar dreta amb steering
+alpha3 = 0.2  # Importancia de la deteccio del darrera esquerra
+alpha4 = 0.2  # Importancia de la deteccio del darrera dret 
 beta = 1      # importancia de la separacio amb el lateral dret 
 phi = 0.1     # si no hi ha ningu al davant poder fer steering
-gamma = 0.1   # velocitat de retorn a la posicio inicial
-theta = 0.4   # valor per reduir la variacio d'un steering amb el seu anterior, evitar canvis bruscos
+gamma = 0.05   # velocitat de retorn a la posicio inicial
+theta = 0.5   # valor per reduir la variacio d'un steering amb el seu anterior, evitar canvis bruscos
 # Velocity Hiperparameter
 vh1 = 3  # Front Left
-vh2 = 1  # Front Right
-vh3 = 1  # Left
-vh4 = 1  # Right
-vh5 = 0.5  # Rear Left
-vh6 = 0.5  # Rear Right
+vh2 = 3  # Front Right
+vh3 = -0.25  # Left
+vh4 = 0.25  # Right
+vh5 = -0.5  # Rear Left
+vh6 = -0.5  # Rear Right
 
 while driver.step() != -1:
     
@@ -95,7 +95,7 @@ while driver.step() != -1:
     driver.setSteeringAngle(steer)
 
 
-    if (driver.step()%100000==0):
+    if (driver.step()%1000000==0):
         '''
         print 'Left: %(l).2f  FrontLeft: %(fl).2f Front = %(f).2f FrontRight = %(fr).2f Right: %(r).2f' % {
         'l': lD/lR,
@@ -105,8 +105,7 @@ while driver.step() != -1:
         'r': rD/rR,
         }
         '''
-        #print("Steer: %.2f" % (steer))
+        print("Steer: %.2f" % (steer))
         #print("dLeft: %.2f" % (dLeft))
-        print("Speed: %.2f" % (speed))
+        #print("Speed: %.2f" % (speed))
         #print("SpeedDiff: %.2f" % (speedDiff))
-    
